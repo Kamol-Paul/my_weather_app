@@ -36,24 +36,33 @@ class _HomeBodyState extends State<HomeBody> {
       locationPermission = await Geolocator.requestPermission();
 
       if(locationPermission == LocationPermission.denied){
-        print("permission denied");
+        if (kDebugMode) {
+          print("permission denied");
+        }
       } else if(locationPermission == LocationPermission.deniedForever){
-        print("forget it. it's reject forever.");
+        if (kDebugMode) {
+          print("forget it. it's reject forever.");
+        }
       } else {
-        print("permission given");
+        if (kDebugMode) {
+          print("permission given");
+        }
       }
     }else {
-      print("Permission Hold");
+      if (kDebugMode) {
+        print("Permission Hold");
+      }
     }
 
     Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high
+      desiredAccuracy: LocationAccuracy.best
     );
     longi = position.longitude.toString();
     lati = position.longitude.toString();
-
-    print("Longitude : " + longi);
-    print("Latitute : " + lati);
+    setState(() {
+      location = "Current  location\nLong : $longi\nLati : $lati";
+      tempData = 23;
+    });
 
   }
   @override
