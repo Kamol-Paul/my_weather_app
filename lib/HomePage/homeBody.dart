@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-
+import 'package:my_weather_app/HomePage/GetData/getData.dart';
 class HomeBody extends StatefulWidget {
   const HomeBody({Key? key}) : super(key: key);
 
@@ -11,7 +11,7 @@ class HomeBody extends StatefulWidget {
 
 class _HomeBodyState extends State<HomeBody> {
   var degree = "\u00B0";
-  var tempData = 25;
+  var tempData = "25.09";
   var location = "Current Location";
   var search = "search";
   var longi,lati;
@@ -24,6 +24,19 @@ class _HomeBodyState extends State<HomeBody> {
       print("We Get the Value from the User: ${textEditingController.text}");
     }
 
+    var machine = WeatherInformationMachine();
+    Map<String,dynamic> response = await machine.getDataWithCity(textEditingController.text);
+    if(response["cod"] == 200){
+      double tempDegree = response['main']['temp'] - 273;
+      setState(() {
+        location = "In location " + response["name"];
+        tempData = tempDegree.toStringAsPrecision(2);
+      });
+    }
+
+
+  }
+  void loadData() async{
     var serviceStatus = await Geolocator.isLocationServiceEnabled();
     if (kDebugMode) {
       print(serviceStatus);
@@ -55,14 +68,26 @@ class _HomeBodyState extends State<HomeBody> {
     }
 
     Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best
+        desiredAccuracy: LocationAccuracy.high
     );
-    longi = position.longitude.toString();
-    lati = position.longitude.toString();
+    longi = position.longitude.toStringAsFixed(2);
+    lati = position.latitude.toStringAsFixed(2);
+
+    var machine = WeatherInformationMachine();
+    var response = await machine.getDataWithLongLat(longi, lati);
+
+    double tempDegree  = response['main']['temp'] - 273;
+
     setState(() {
-      location = "Current  location\nLong : $longi\nLati : $lati";
-      tempData = 23;
+      tempData = tempDegree.toStringAsPrecision(2);
+      location = "Current Location " + response["name"];
     });
+
+  }
+  @override
+  void initState() {
+    super.initState();
+    loadData();
 
   }
   @override
@@ -71,7 +96,7 @@ class _HomeBodyState extends State<HomeBody> {
         alignment: Alignment.topCenter,
         color: Colors.blue.shade500,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
               location,
@@ -93,7 +118,7 @@ class _HomeBodyState extends State<HomeBody> {
               //color: Colors.green,
               child:  Container(
                 alignment: Alignment.center,
-                color: Colors.green.shade300,
+                color: Colors.amberAccent,
                 width: 200,
                 child:  TextField(
                   controller: textEditingController,
