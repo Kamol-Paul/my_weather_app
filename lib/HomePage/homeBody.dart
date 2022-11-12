@@ -14,6 +14,7 @@ class _HomeBodyState extends State<HomeBody> {
   var tempData = "25.09";
   var location = "Current Location";
   var search = "search";
+  var description = "Welcome";
   var longi,lati;
   TextEditingController textEditingController = TextEditingController();
   void getWeather() async {
@@ -31,6 +32,8 @@ class _HomeBodyState extends State<HomeBody> {
       setState(() {
         location = "In location " + response["name"];
         tempData = tempDegree.toStringAsPrecision(2);
+        description = response['weather'][0]['description'];
+
       });
     }
 
@@ -76,12 +79,16 @@ class _HomeBodyState extends State<HomeBody> {
     var machine = WeatherInformationMachine();
     var response = await machine.getDataWithLongLat(longi, lati);
 
-    double tempDegree  = response['main']['temp'] - 273;
+    if(response["cod"] == 200){
+      double tempDegree  = response['main']['temp'] - 273;
 
-    setState(() {
-      tempData = tempDegree.toStringAsPrecision(2);
-      location = "Current Location " + response["name"];
-    });
+      setState(() {
+        tempData = tempDegree.toStringAsPrecision(2);
+        location = "Current Location " + response["name"];
+        description = response['weather'][0]['description'];
+      });
+    }
+
 
   }
   @override
@@ -113,6 +120,13 @@ class _HomeBodyState extends State<HomeBody> {
                   fontStyle: FontStyle.normal,
                   fontSize: 40,
                 )),
+            Text(
+              description,
+              style: const TextStyle(
+                fontFamily: 'monospace',
+                fontSize: 20
+              ),
+            ),
             Center(
               //alignment: Alignment.center,
               //color: Colors.green,
@@ -130,7 +144,18 @@ class _HomeBodyState extends State<HomeBody> {
             TextButton(onPressed: getWeather, child: Text(
               search,
               style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
-            ))
+            )),
+            TextButton(onPressed: loadData, child: const Text(
+              "Get Current Location Temperature",
+              style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 21,
+            fontFamily: 'monospace'
+              )
+            )
+            )
+
 
           ],
         ));
