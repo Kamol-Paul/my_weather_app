@@ -90,8 +90,6 @@ class _HomeBodyState extends State<HomeBody> {
     super.initState();
     loadData();
     setTimer();
-
-
   }
   @override
   Widget build(BuildContext context) {
@@ -146,11 +144,8 @@ class _HomeBodyState extends State<HomeBody> {
               ),
             ),
             Center(
-              //alignment: Alignment.center,
-              //color: Colors.green,
               child:  Container(
                 alignment: Alignment.center,
-                //color: Colors.amberAccent,
                 width: 200,
                 child:  TextField(
                   controller: textEditingController,
