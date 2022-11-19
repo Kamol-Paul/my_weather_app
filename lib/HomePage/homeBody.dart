@@ -47,7 +47,7 @@ class _HomeBodyState extends State<HomeBody> {
       double farData = converter.getFar(tempDegree);
 
       setState((){
-        location = "In location  " + response['name'];
+        location = "In location ${response['name']}";
         far = farData.toStringAsPrecision(2);
         tempData = tempDegree.toStringAsPrecision(2);
         description = response['weather'][0]['description'];
@@ -68,7 +68,7 @@ class _HomeBodyState extends State<HomeBody> {
       setState(() {
         tempData = tempDegree.toStringAsPrecision(2);
         far = farData.toStringAsPrecision(2);
-        location = "Current Location " + response['name'];
+        location = "Current Location ${response['name']}";
         description = response['weather'][0]['description'];
         res = response;
       });
