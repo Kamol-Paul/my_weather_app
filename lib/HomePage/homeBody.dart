@@ -110,7 +110,7 @@ class _HomeBodyState extends State<HomeBody> {
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.topCenter,
-        color: Colors.blue.shade500,
+        color: Colors.greenAccent,
         child :Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
