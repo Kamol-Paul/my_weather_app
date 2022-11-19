@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:my_weather_app/HomePage/GetData/getData.dart';
 import 'package:my_weather_app/HomePage/GetData/CelToFar.dart';
+import 'package:my_weather_app/HomePage/LocationData/GetLocationData.dart';
 import 'package:my_weather_app/HomePage/TimeFeature/AdditionalFeature.dart';
 import 'package:my_weather_app/HomePage/TimeFeature/TimerTest.dart';
 class HomeBody extends StatefulWidget {
@@ -15,8 +14,7 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
-
-  Widget additionalFeatures = Text("Loading");
+  var res = WeatherInformationMachine.getSample();
 
   var degree = "\u00B0" " C";
   var tempData = "25.09";
@@ -25,7 +23,6 @@ class _HomeBodyState extends State<HomeBody> {
   var location = "Current Location";
   var search = "search";
   var description = "Welcome";
-  var longi,lati;
   var converter = CelToFar();
   var dateUpdate = TimerTest();
   var date = "current date",currentTime = "current time";
@@ -40,13 +37,8 @@ class _HomeBodyState extends State<HomeBody> {
     });
   }
   TextEditingController textEditingController = TextEditingController();
+
   void getWeather() async {
-    if (kDebugMode) {
-      print("Praised");
-    }
-    if (kDebugMode) {
-      print("We Get the Value from the User: ${textEditingController.text}");
-    }
 
     var machine = WeatherInformationMachine();
     Map<String,dynamic> response = await machine.getDataWithCity(textEditingController.text);
@@ -55,69 +47,30 @@ class _HomeBodyState extends State<HomeBody> {
       double farData = converter.getFar(tempDegree);
 
       setState((){
-          additionalFeatures = const Text("data");
-        location = "In location " + response["name"];
+        location = "In location  " + response['name'];
         far = farData.toStringAsPrecision(2);
         tempData = tempDegree.toStringAsPrecision(2);
         description = response['weather'][0]['description'];
-        additionalFeatures = AdditionalFeatures(response: response);
-
+        res = response;
       });
     }
 
 
   }
+
+
   void loadData() async{
-    var serviceStatus = await Geolocator.isLocationServiceEnabled();
-    if (kDebugMode) {
-      print(serviceStatus);
-    }
-
-
-    LocationPermission locationPermission = await Geolocator.checkPermission();
-
-    if(locationPermission == LocationPermission.denied){
-      locationPermission = await Geolocator.requestPermission();
-
-      if(locationPermission == LocationPermission.denied){
-        if (kDebugMode) {
-          print("permission denied");
-        }
-      } else if(locationPermission == LocationPermission.deniedForever){
-        if (kDebugMode) {
-          print("forget it. it's reject forever.");
-        }
-      } else {
-        if (kDebugMode) {
-          print("permission given");
-        }
-      }
-    }else {
-      if (kDebugMode) {
-        print("Permission Hold");
-      }
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high
-    );
-    longi = position.longitude.toStringAsFixed(2);
-    lati = position.latitude.toStringAsFixed(2);
-
-    var machine = WeatherInformationMachine();
-    var response = await machine.getDataWithLongLat(longi, lati);
-
+    Map<String,dynamic> response = await GetLocationData.getResponseForCurrentLocation();
     if(response["cod"] == 200){
       double tempDegree  = response['main']['temp'] - 273;
       double farData = converter.getFar(tempDegree);
 
       setState(() {
-        additionalFeatures = const Text("Loading");
         tempData = tempDegree.toStringAsPrecision(2);
         far = farData.toStringAsPrecision(2);
-        location = "Current Location " + response["name"];
+        location = "Current Location " + response['name'];
         description = response['weather'][0]['description'];
-        additionalFeatures = AdditionalFeatures(response: response);
+        res = response;
       });
     }
 
@@ -230,7 +183,7 @@ class _HomeBodyState extends State<HomeBody> {
                 )
             )
             ),
-            additionalFeatures
+            AdditionalFeatures(response: res),
 
 
 
