@@ -54,7 +54,8 @@ class _HomeBodyState extends State<HomeBody> {
       double tempDegree = response['main']['temp'] - 273;
       double farData = converter.getFar(tempDegree);
 
-      setState(() {
+      setState((){
+          additionalFeatures = const Text("data");
         location = "In location " + response["name"];
         far = farData.toStringAsPrecision(2);
         tempData = tempDegree.toStringAsPrecision(2);
@@ -111,6 +112,7 @@ class _HomeBodyState extends State<HomeBody> {
       double farData = converter.getFar(tempDegree);
 
       setState(() {
+        additionalFeatures = const Text("Loading");
         tempData = tempDegree.toStringAsPrecision(2);
         far = farData.toStringAsPrecision(2);
         location = "Current Location " + response["name"];

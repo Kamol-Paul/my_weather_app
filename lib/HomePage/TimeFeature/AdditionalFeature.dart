@@ -19,19 +19,19 @@ class _AdditionalFeaturesState extends State<AdditionalFeatures> {
 
   void initState(){
       super.initState();
-    changeState();
+    changeState(widget.response);
   }
-  void changeState(){
+  void changeState(data){
 
     setState((){
-      humidity = "${widget.response['main']['humidity']}%";
-      windPressure = widget.response['wind']['speed'].toString();
-      eyeValue = "${widget.response['visibility']/1000.0} km";
+      humidity = "${data['main']['humidity']}%";
+      windPressure = data['wind']['speed'].toString();
+      eyeValue = "${data['visibility']/1000.0} km";
     });
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
