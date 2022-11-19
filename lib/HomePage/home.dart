@@ -17,6 +17,7 @@ class _HomeState extends State<Home> {
       ),
       backgroundColor: Colors.green.shade400,
       body: const HomeBody(),
+      resizeToAvoidBottomInset: false,
 
 
     );

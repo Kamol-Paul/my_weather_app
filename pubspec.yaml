@@ -30,6 +30,7 @@ dependencies:
   geolocator:
   intl:
   http:
+  weather_icons:
   flutter:
     sdk: flutter
 
