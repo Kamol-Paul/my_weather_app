@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:my_weather_app/HomePage/GetData/getData.dart';
 import 'package:my_weather_app/HomePage/GetData/CelToFar.dart';
+import 'package:my_weather_app/HomePage/TimeFeature/TimerTest.dart';
 class HomeBody extends StatefulWidget {
   const HomeBody({Key? key}) : super(key: key);
 
@@ -20,6 +23,18 @@ class _HomeBodyState extends State<HomeBody> {
   var description = "Welcome";
   var longi,lati;
   var converter = CelToFar();
+  var dateUpdate = TimerTest();
+  var date = "current date",currentTime = "current time";
+  void setDate(){
+    setState(() {
+      date = dateUpdate.getCurrentDate();
+    });
+  }
+  void setTime(){
+    setState(() {
+      currentTime = dateUpdate.getCurrentTime();
+    });
+  }
   TextEditingController textEditingController = TextEditingController();
   void getWeather() async {
     if (kDebugMode) {
@@ -100,11 +115,19 @@ class _HomeBodyState extends State<HomeBody> {
 
 
   }
+  void setTimer(){
+    Timer.periodic(
+        const Duration(seconds: 1),(timer){
+      setTime();
+      setDate();
+    }
+    );
+  }
   @override
   void initState() {
     super.initState();
     loadData();
-
+    setTimer();
   }
   @override
   Widget build(BuildContext context) {
@@ -142,6 +165,12 @@ class _HomeBodyState extends State<HomeBody> {
                       fontSize: 40,
                     )),
               ],
+            ),
+            Text(
+              date,
+            ),
+            Text(
+              currentTime,
             ),
 
             Text(
