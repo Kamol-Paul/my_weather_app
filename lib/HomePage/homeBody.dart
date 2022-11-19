@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:my_weather_app/HomePage/GetData/getData.dart';
 import 'package:my_weather_app/HomePage/GetData/CelToFar.dart';
+import 'package:my_weather_app/HomePage/TimeFeature/AdditionalFeature.dart';
 import 'package:my_weather_app/HomePage/TimeFeature/TimerTest.dart';
 class HomeBody extends StatefulWidget {
   const HomeBody({Key? key}) : super(key: key);
@@ -14,6 +15,9 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
+
+  Widget additionalFeatures = Text("Loading");
+
   var degree = "\u00B0" " C";
   var tempData = "25.09";
   var far = "98.4";
@@ -55,6 +59,7 @@ class _HomeBodyState extends State<HomeBody> {
         far = farData.toStringAsPrecision(2);
         tempData = tempDegree.toStringAsPrecision(2);
         description = response['weather'][0]['description'];
+        additionalFeatures = AdditionalFeatures(response: response);
 
       });
     }
@@ -110,6 +115,7 @@ class _HomeBodyState extends State<HomeBody> {
         far = farData.toStringAsPrecision(2);
         location = "Current Location " + response["name"];
         description = response['weather'][0]['description'];
+        additionalFeatures = AdditionalFeatures(response: response);
       });
     }
 
@@ -123,11 +129,14 @@ class _HomeBodyState extends State<HomeBody> {
     }
     );
   }
+
   @override
   void initState() {
     super.initState();
     loadData();
     setTimer();
+
+
   }
   @override
   Widget build(BuildContext context) {
@@ -218,7 +227,9 @@ class _HomeBodyState extends State<HomeBody> {
                     fontFamily: 'monospace'
                 )
             )
-            )
+            ),
+            additionalFeatures
+
 
 
 
