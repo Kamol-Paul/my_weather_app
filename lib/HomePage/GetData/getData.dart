@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 class WeatherInformationMachine{
@@ -15,9 +14,7 @@ class WeatherInformationMachine{
     return data;
   }
   Future<Map<String, dynamic>> getDataWithLongLat(String lon, String lat) async{
-     if (kDebugMode) {
-       print(lon + lat);
-     }
+
     final queryParameter = {
       "lon" : lon,
       "lat" : lat,
