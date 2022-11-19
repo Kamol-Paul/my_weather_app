@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:my_weather_app/HomePage/GetData/getData.dart';
+import 'package:my_weather_app/HomePage/GetData/CelToFar.dart';
 class HomeBody extends StatefulWidget {
   const HomeBody({Key? key}) : super(key: key);
 
@@ -10,12 +11,15 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
-  var degree = "\u00B0";
+  var degree = "\u00B0" " C";
   var tempData = "25.09";
+  var far = "98.4";
+  var degreeF = "\u00B0" " F";
   var location = "Current Location";
   var search = "search";
   var description = "Welcome";
   var longi,lati;
+  var converter = CelToFar();
   TextEditingController textEditingController = TextEditingController();
   void getWeather() async {
     if (kDebugMode) {
@@ -29,8 +33,11 @@ class _HomeBodyState extends State<HomeBody> {
     Map<String,dynamic> response = await machine.getDataWithCity(textEditingController.text);
     if(response["cod"] == 200){
       double tempDegree = response['main']['temp'] - 273;
+      double farData = converter.getFar(tempDegree);
+
       setState(() {
         location = "In location " + response["name"];
+        far = farData.toStringAsPrecision(2);
         tempData = tempDegree.toStringAsPrecision(2);
         description = response['weather'][0]['description'];
 
@@ -81,9 +88,11 @@ class _HomeBodyState extends State<HomeBody> {
 
     if(response["cod"] == 200){
       double tempDegree  = response['main']['temp'] - 273;
+      double farData = converter.getFar(tempDegree);
 
       setState(() {
         tempData = tempDegree.toStringAsPrecision(2);
+        far = farData.toStringAsPrecision(2);
         location = "Current Location " + response["name"];
         description = response['weather'][0]['description'];
       });
@@ -102,29 +111,45 @@ class _HomeBodyState extends State<HomeBody> {
     return Container(
         alignment: Alignment.topCenter,
         color: Colors.blue.shade500,
+        child :Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
               location,
               style: const TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   wordSpacing: 1,
-                  backgroundColor: Colors.green,
+                  overflow: TextOverflow.visible,
+                  color: Colors.purple,
                   fontFamily: "monospace"),
             ),
-            Text(tempData.toString() + degree,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 40,
-                )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+
+                Text(tempData.toString() + degree,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 40,
+                    )),
+                Text(far.toString() + degreeF,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 40,
+                    )),
+              ],
+            ),
+
             Text(
               description,
               style: const TextStyle(
                 fontFamily: 'monospace',
-                fontSize: 20
+                fontSize: 20,
+                color: Colors.orangeAccent
               ),
             ),
             Center(
@@ -132,7 +157,7 @@ class _HomeBodyState extends State<HomeBody> {
               //color: Colors.green,
               child:  Container(
                 alignment: Alignment.center,
-                color: Colors.amberAccent,
+                //color: Colors.amberAccent,
                 width: 200,
                 child:  TextField(
                   controller: textEditingController,
@@ -146,7 +171,7 @@ class _HomeBodyState extends State<HomeBody> {
               style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
             )),
             TextButton(onPressed: loadData, child: const Text(
-              "Get Current Location Temperature",
+              "Get Current Location ",
               style: TextStyle(
             color: Colors.red,
             fontWeight: FontWeight.bold,
@@ -154,10 +179,21 @@ class _HomeBodyState extends State<HomeBody> {
             fontFamily: 'monospace'
               )
             )
+            ),
+            TextButton(onPressed: loadData, child: const Text(
+                "Temperature",
+                style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 21,
+                    fontFamily: 'monospace'
+                )
+            )
             )
 
 
+
           ],
-        ));
+        )));
   }
 }
