@@ -12,11 +12,27 @@ class _AppBatWidgetState extends State<AppBatWidget> {
   Widget build(BuildContext context) {
     return  Container(
       alignment: Alignment.center,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 3,
+              color: Colors.greenAccent
+
+        ),
+        borderRadius: BorderRadius.circular(50),
+        gradient: LinearGradient(
+          colors: [
+            Colors.indigo.shade900,
+            Colors.green.shade900
+          ]
+        ),
+      ),
       child:  const Text(
-        "Weather App",
+        "আবহাওয়া",
+
         style: TextStyle(
           fontSize: 30,
-          fontWeight: FontWeight.bold
+          fontWeight: FontWeight.bold,
+          color: Colors.white
         ),
       ),
     );

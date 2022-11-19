@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const AppBatWidget(),
       ),
-      backgroundColor: Colors.green.shade400,
+      //backgroundColor: Colors.green.shade400,
       body: const HomeBody(),
       resizeToAvoidBottomInset: false,
 

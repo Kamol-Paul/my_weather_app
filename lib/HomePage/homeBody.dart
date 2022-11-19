@@ -100,6 +100,14 @@ class _HomeBodyState extends State<HomeBody> {
       opacity: 0.8,
       child: Container(
         decoration:  BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.blue.shade700,
+              Colors.green.shade700
+            ]
+          ),
           color: Colors.greenAccent,
           border: Border.all(
             color: Colors.greenAccent.shade700,
@@ -112,15 +120,30 @@ class _HomeBodyState extends State<HomeBody> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Text(
-                location,
-                style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    wordSpacing: 1,
-                    overflow: TextOverflow.visible,
-                    color: Colors.purple,
-                    fontFamily: "monospace"),
+              Opacity(
+                opacity: 0.6,
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white,
+                        Colors.pink.shade100
+                      ]
+                    ),
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Text(
+                    location,
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        wordSpacing: 1,
+                        overflow: TextOverflow.visible,
+                        color: Colors.purple,
+                        fontFamily: "monospace"),
+                  ),
+                ),
               ),
               Opacity(
                 opacity: 0.5,
@@ -147,7 +170,7 @@ class _HomeBodyState extends State<HomeBody> {
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 40,
+                                fontSize: 30,
                               )),
                           const SizedBox(
                             width: 40,
@@ -156,7 +179,7 @@ class _HomeBodyState extends State<HomeBody> {
                               style: const TextStyle(
                                 fontWeight: FontWeight.w900,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 40,
+                                fontSize: 30,
                               )),
                         ],
                       ),
@@ -164,24 +187,60 @@ class _HomeBodyState extends State<HomeBody> {
                   ),
                 ),
               ),
-              Text(
-                date,
+              Container(
+                decoration: const BoxDecoration(
+
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.red,
+                      Colors.green
+                    ]
+                  ),
+                ),
+                child: Text(
+                  date,
+                  style: const TextStyle(
+                    fontSize: 18
+                  ),
+                ),
               ),
-              Text(
-                currentTime,
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.indigo,
+                      Colors.transparent
+                    ]
+                  ),
+                ),
+                child: Text(
+                  currentTime,
+                  style: const TextStyle(
+                    fontSize: 17
+                  ),
+                ),
               ),
               Opacity(
                 opacity: 0.8,
                 child: Container(
 
                   decoration: BoxDecoration(
-                    color: Colors.deepPurpleAccent,
                     border: Border.all(
                       color: Colors.cyan,
                       width: 1,
                       style: BorderStyle.solid
                     ),
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Colors.grey,
+                        Colors.indigo
+                      ]
+                    ),
                   ),
                   child: Text(
                     description,
@@ -194,7 +253,7 @@ class _HomeBodyState extends State<HomeBody> {
               ),
               Container(
                 padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                margin: const EdgeInsets.fromLTRB(20, 5, 20, 0),
                 decoration: BoxDecoration(
                     color: Colors.blue.shade300,
                     borderRadius:  BorderRadius.circular(20),
@@ -226,14 +285,20 @@ class _HomeBodyState extends State<HomeBody> {
                         fontSize: 20, fontWeight: FontWeight.bold),
                   )),
               Opacity(
-                opacity: 0.7,
+                opacity: 1,
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.green.shade400,
                     border: Border.all(
                       width: 2
                     ),
-                    borderRadius: const BorderRadius.all(Radius.circular(15))
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.blue.shade900,
+                        Colors.green.shade900,
+                      ]
+                    ),
 
                   ),
                   child: TextButton(
@@ -247,6 +312,21 @@ class _HomeBodyState extends State<HomeBody> {
                 ),
               ),
               AdditionalFeatures(response: res),
+              Column(
+                children: const [
+                  Text("App Developed By Kamol",
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.indigo,
+                  ),),
+                  Text("All data get from openweathermap.org",
+                  style: TextStyle(
+                    color: Colors.cyan
+                  ),
+                  )
+                ],
+              )
             ],
           ))),
     );
